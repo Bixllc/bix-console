@@ -110,17 +110,21 @@ export function Sidebar() {
           )}
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-4 px-2">
+        {/* Nav — matches .bx-side__nav / .bx-nav-item from portal.css */}
+        <nav className="flex-1 overflow-y-auto" style={{ padding: '14px 12px 8px' }}>
           {groups.map(g => (
-            <div key={g.label} className="mb-5">
+            <div key={g.label} style={{ marginBottom: 4 }}>
               {sidebarOpen && (
-                <p
-                  className="text-[10px] font-semibold tracking-[0.12em] uppercase px-2 mb-1.5"
-                  style={{ color: 'var(--bx-faint)' }}
-                >
+                <div style={{
+                  fontSize: 10,
+                  letterSpacing: '0.14em',
+                  textTransform: 'uppercase',
+                  color: 'var(--bx-faint)',
+                  fontWeight: 600,
+                  padding: '12px 12px 6px',
+                }}>
                   {g.label}
-                </p>
+                </div>
               )}
               {g.items.map(item => (
                 <NavLink
@@ -128,30 +132,11 @@ export function Sidebar() {
                   to={item.to}
                   end={item.to === '/'}
                   onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
-                  className="flex items-center gap-2.5 px-2 py-2 rounded-[var(--bx-r)] transition-all duration-150 mb-0.5"
-                  style={({ isActive }) => ({
-                    background: isActive ? 'var(--bx-purple-soft)' : 'transparent',
-                    color: isActive ? 'var(--bx-purple)' : 'var(--bx-muted)',
-                  })}
+                  className={({ isActive }) => `bx-nav-item${isActive ? ' is-active' : ''}`}
                   title={!sidebarOpen ? item.label : undefined}
                 >
-                  {({ isActive }) => (
-                    <>
-                      <item.icon
-                        size={15}
-                        className="shrink-0"
-                        style={{ color: isActive ? 'var(--bx-purple)' : 'var(--bx-muted)' }}
-                      />
-                      {sidebarOpen && (
-                        <span
-                          className="text-[13px] font-medium whitespace-nowrap leading-none"
-                          style={{ color: isActive ? 'var(--bx-purple)' : 'var(--bx-ink-2)' }}
-                        >
-                          {item.label}
-                        </span>
-                      )}
-                    </>
-                  )}
+                  <item.icon size={18} />
+                  {sidebarOpen && item.label}
                 </NavLink>
               ))}
             </div>

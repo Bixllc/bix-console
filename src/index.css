@@ -120,3 +120,29 @@ h1, h2, h3, h4, h5, h6 {
 
 /* FAB always above cards */
 .bx-fab { z-index: 140 !important; }
+
+/* ─── Sidebar nav items ──────────────────────────────────────────────────── */
+.bx-nav-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 9px 12px; border-radius: var(--bx-r-sm);
+  font-size: 13.5px; font-weight: 500; color: var(--bx-ink-2);
+  position: relative; cursor: pointer; width: 100%;
+  border: 0; background: transparent; text-align: left; text-decoration: none;
+  transition: background 160ms, color 160ms;
+}
+.bx-nav-item svg { width: 18px; height: 18px; color: var(--bx-faint); flex-shrink: 0; transition: color 160ms; }
+.bx-nav-item:hover { background: var(--bx-bg); color: var(--bx-ink); }
+.bx-nav-item:hover svg { color: var(--bx-muted); }
+.bx-nav-item.is-active { background: var(--bx-purple-soft); color: var(--bx-purple); }
+.bx-nav-item.is-active svg { color: var(--bx-purple); }
+.bx-nav-item.is-active::before {
+  content: ""; position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 18px; border-radius: 0 3px 3px 0; background: var(--bx-purple);
+}
+/* count badge (for future use) */
+.bx-nav-item__count {
+  margin-left: auto; font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace;
+  min-width: 18px; height: 18px; padding: 0 5px; border-radius: var(--bx-pill);
+  display: inline-grid; place-items: center;
+  background: var(--bx-purple); color: #fff;
+}
