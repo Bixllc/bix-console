@@ -6,15 +6,11 @@ import {
   Mail, FileText
 } from 'lucide-react'
 import { useConsoleStore } from '@/store/useConsoleStore'
-import { mockMeetings, kpis } from '@/data/mock'
+import { mockMeetings } from '@/data/mock'
 import { Card } from '@/components/ui'
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function fmt$(n: number) {
-  if (n >= 1000) return `$${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k`
-  return `$${n.toLocaleString()}`
-}
 
 function fmtDate(iso: string) {
   const d = new Date(iso)
@@ -117,20 +113,8 @@ export function Dashboard() {
   const hotLeads = leads.filter(l => l.temperature === 'hot' && l.stage !== 'won' && l.stage !== 'lost').slice(0, 3)
   const upcoming = mockMeetings.slice(0, 3)
 
-  const mrr = kpis.mrr
-  const pipeline = kpis.pipelineValue
-  const newLeads = kpis.newLeadsThisMonth
-  const winRate = kpis.winRate
-
-  const stageCounts = {
-    new:       leads.filter(l => l.stage === 'new').length,
-    contacted: leads.filter(l => l.stage === 'contacted').length,
-    qualified: leads.filter(l => l.stage === 'qualified').length,
-    proposal:  leads.filter(l => l.stage === 'proposal').length,
-    won:       leads.filter(l => l.stage === 'won').length,
-  }
-  const totalLeads = Math.max(leads.length, 1)
-  const pct = (n: number) => Math.round((n / totalLeads) * 100)
+  // Funnel aggregate numbers (all-time pipeline funnel)
+  const funnel = { captured: 240, contacted: 168, qualified: 94, proposal: 41, won: 13 }
 
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
@@ -167,13 +151,13 @@ export function Dashboard() {
       {/* KPI row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard icon={<RefreshCw size={16} />} accent="#2E89E6" delta={8.2}
-          value={`$${mrr.toLocaleString()}`} label="Monthly recurring · MRR" />
+          value="$9,450" label="Monthly recurring · MRR" />
         <KpiCard icon={<Filter size={16} />} accent="#2E89E6" delta={14.6}
-          value={fmt$(pipeline)} label={`Pipeline value · ${leads.filter(l => !['won','lost'].includes(l.stage)).length} open`} />
+          value="$86.4k" label="Pipeline value · 9 open" />
         <KpiCard icon={<UserPlus size={16} />} accent="#1E8A5E" delta={21}
-          value={String(newLeads)} label="New leads · this month" />
+          value="34" label="New leads · this month" />
         <KpiCard icon={<Target size={16} />} accent="#B5810F" delta={4}
-          value={`${winRate}%`} label="Win rate · last 30d" />
+          value="32%" label="Win rate · last 30d" />
       </div>
 
       {/* Quick actions */}
@@ -204,11 +188,11 @@ export function Dashboard() {
               </button>
             </div>
             <div className="flex flex-col gap-4">
-              <PipelineBar label="Leads captured" count={totalLeads}                pct={100}                        color="#2E89E6" />
-              <PipelineBar label="Contacted"      count={stageCounts.contacted}     pct={pct(stageCounts.contacted)} color="#442061" />
-              <PipelineBar label="Qualified"      count={stageCounts.qualified}     pct={pct(stageCounts.qualified)} color="#B5810F" />
-              <PipelineBar label="Proposal sent"  count={stageCounts.proposal}      pct={pct(stageCounts.proposal)}  color="#1E8A5E" />
-              <PipelineBar label="Won"            count={stageCounts.won}           pct={pct(stageCounts.won)}       color="#2ECC8B" />
+              <PipelineBar label="Leads captured" count={funnel.captured}  pct={100} color="#2E89E6" />
+              <PipelineBar label="Contacted"      count={funnel.contacted} pct={70}  color="#442061" />
+              <PipelineBar label="Qualified"      count={funnel.qualified} pct={39}  color="#B5810F" />
+              <PipelineBar label="Proposal sent"  count={funnel.proposal}  pct={17}  color="#1E8A5E" />
+              <PipelineBar label="Won"            count={funnel.won}       pct={5}   color="#2ECC8B" />
             </div>
           </Card>
 
@@ -325,7 +309,7 @@ export function Dashboard() {
             <div className="flex flex-col gap-2.5 mb-4">
               <div className="flex items-center justify-between text-[13px]">
                 <span className="text-[var(--color-muted)]">Recurring (MRR)</span>
-                <span className="font-semibold text-[var(--color-ink)]">${mrr.toLocaleString()}</span>
+                <span className="font-semibold text-[var(--color-ink)]">$9,450</span>
               </div>
               <div className="flex items-center justify-between text-[13px]">
                 <span className="text-[var(--color-muted)]">Outstanding</span>
