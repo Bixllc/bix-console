@@ -1,43 +1,39 @@
 import { NavLink } from 'react-router-dom'
 import {
-  LayoutDashboard, Users, Megaphone, Briefcase, FolderKanban,
-  Receipt, CalendarDays, Settings, ChevronLeft, ChevronRight, X
+  LayoutDashboard, UserPlus, Megaphone, Users, FolderOpen,
+  DollarSign, CalendarDays, Settings, ChevronDown, X
 } from 'lucide-react'
 import { useConsoleStore } from '@/store/useConsoleStore'
 
 const groups = [
   {
     label: 'Overview',
-    items: [
-      { label: 'Dashboard', icon: LayoutDashboard, to: '/' },
-    ]
+    items: [{ label: 'Dashboard', icon: LayoutDashboard, to: '/' }],
   },
   {
     label: 'Growth',
     items: [
-      { label: 'Leads', icon: Users, to: '/leads' },
+      { label: 'Leads',   icon: UserPlus,  to: '/leads'   },
       { label: 'Nurture', icon: Megaphone, to: '/nurture' },
-    ]
+    ],
   },
   {
     label: 'Delivery',
     items: [
-      { label: 'Clients', icon: Briefcase, to: '/clients' },
-      { label: 'Projects', icon: FolderKanban, to: '/projects' },
-    ]
+      { label: 'Clients',  icon: Users,      to: '/clients'  },
+      { label: 'Projects', icon: FolderOpen, to: '/projects' },
+    ],
   },
   {
     label: 'Business',
     items: [
-      { label: 'Invoices', icon: Receipt, to: '/invoices' },
-      { label: 'Calendar', icon: CalendarDays, to: '/calendar' },
-    ]
+      { label: 'Invoices & Revenue', icon: DollarSign,   to: '/invoices' },
+      { label: 'Calendar',           icon: CalendarDays, to: '/calendar' },
+    ],
   },
   {
     label: 'Account',
-    items: [
-      { label: 'Settings', icon: Settings, to: '/settings' },
-    ]
+    items: [{ label: 'Settings', icon: Settings, to: '/settings' }],
   },
 ]
 
@@ -48,43 +44,55 @@ export function Sidebar() {
     <>
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 z-30 bg-[var(--color-ink)]/30 lg:hidden transition-opacity duration-200 ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 z-30 lg:hidden transition-opacity duration-200 ${sidebarOpen ? 'opacity-100 bg-black/40' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setSidebarOpen(false)}
       />
 
-      <aside className={`
-        fixed lg:relative z-40 flex flex-col
-        bg-[var(--color-surface)] border-r border-[var(--color-hairline)]
-        transition-[width,transform] duration-240 ease-[cubic-bezier(0.22,1,0.36,1)]
-        h-full shrink-0 overflow-hidden
-        ${sidebarOpen ? 'w-[252px] translate-x-0' : 'w-[252px] -translate-x-full lg:w-[60px] lg:translate-x-0'}
-      `}>
+      <aside
+        style={{ background: '#130C1F' }}
+        className={`
+          fixed lg:relative z-40 flex flex-col h-full shrink-0 overflow-hidden
+          transition-[width,transform] duration-240 ease-[cubic-bezier(0.22,1,0.36,1)]
+          ${sidebarOpen ? 'w-[240px] translate-x-0' : 'w-[240px] -translate-x-full lg:w-[60px] lg:translate-x-0'}
+        `}
+      >
         {/* Logo */}
-        <div className="flex items-center gap-3 px-4 h-[60px] border-b border-[var(--color-hairline)] shrink-0">
-          <div className="w-8 h-8 rounded-[var(--radius-base)] bg-[var(--color-purple)] flex items-center justify-center shrink-0">
-            <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-              <path d="M5 4h6a4 4 0 0 1 0 8H5V4z" stroke="white" strokeWidth="1.8" strokeLinejoin="round"/>
-              <path d="M5 12h6.5a4 4 0 0 1 0 8H5v-8z" stroke="white" strokeWidth="1.8" strokeLinejoin="round" opacity=".6"/>
+        <div className="flex items-center gap-2.5 px-4 h-[60px] shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+          {/* B icon */}
+          <div className="w-8 h-8 rounded-[10px] bg-[var(--color-purple)] flex items-center justify-center shrink-0">
+            <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
+              <path d="M5 3h7a4 4 0 0 1 0 8H5V3z" stroke="white" strokeWidth="1.8" strokeLinejoin="round"/>
+              <path d="M5 11h7.5a4 4 0 0 1 0 8H5v-8z" stroke="white" strokeWidth="1.8" strokeLinejoin="round" opacity=".65"/>
             </svg>
           </div>
+
           {sidebarOpen && (
-            <div className="overflow-hidden">
-              <div className="text-[14px] font-semibold font-[var(--font-display)] text-[var(--color-ink)] leading-tight whitespace-nowrap">Bix</div>
-              <div className="text-[10px] text-[var(--color-muted)] whitespace-nowrap tracking-wide">Agency Console</div>
-            </div>
+            <>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[14px] font-bold text-white font-[var(--font-display)] tracking-wide">BIX</span>
+                  <span className="text-[9px] font-semibold bg-[var(--color-purple)] text-white px-1.5 py-0.5 rounded-[4px] tracking-wider uppercase">Admin</span>
+                </div>
+                <div className="text-[10px] tracking-wide" style={{ color: 'rgba(255,255,255,0.4)' }}>Agency Console</div>
+              </div>
+              <button className="p-1 lg:hidden" style={{ color: 'rgba(255,255,255,0.4)' }} onClick={() => setSidebarOpen(false)}>
+                <X size={15} />
+              </button>
+            </>
           )}
-          {/* Mobile close */}
-          <button className="ml-auto lg:hidden p-1 text-[var(--color-muted)]" onClick={() => setSidebarOpen(false)}>
-            <X size={16} />
-          </button>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-3 px-2">
+        <nav className="flex-1 overflow-y-auto py-4 px-2">
           {groups.map(g => (
-            <div key={g.label} className="mb-4">
+            <div key={g.label} className="mb-5">
               {sidebarOpen && (
-                <p className="text-[10px] font-semibold tracking-[0.1em] uppercase text-[var(--color-faint)] px-2 mb-1">{g.label}</p>
+                <p
+                  className="text-[10px] font-semibold tracking-[0.12em] uppercase px-2 mb-1.5"
+                  style={{ color: 'rgba(255,255,255,0.32)' }}
+                >
+                  {g.label}
+                </p>
               )}
               {g.items.map(item => (
                 <NavLink
@@ -93,19 +101,29 @@ export function Sidebar() {
                   end={item.to === '/'}
                   onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}
                   className={({ isActive }) =>
-                    `flex items-center gap-2.5 px-2 py-2 rounded-[var(--radius-base)] transition-all duration-150 group ${
+                    `flex items-center gap-2.5 px-2 py-2 rounded-[10px] transition-all duration-150 mb-0.5 group ${
                       isActive
-                        ? 'bg-[var(--color-purple-soft)] text-[var(--color-purple)]'
-                        : 'text-[var(--color-muted)] hover:bg-[rgba(20,16,31,0.05)] hover:text-[var(--color-ink)]'
+                        ? 'text-white'
+                        : 'hover:text-white'
                     }`
                   }
+                  style={({ isActive }) => ({
+                    background: isActive ? 'rgba(255,255,255,0.10)' : 'transparent',
+                    color: isActive ? '#fff' : 'rgba(255,255,255,0.45)',
+                  })}
                   title={!sidebarOpen ? item.label : undefined}
                 >
                   {({ isActive }) => (
                     <>
-                      <item.icon size={16} className={`shrink-0 ${isActive ? 'text-[var(--color-purple)]' : ''}`} />
+                      <item.icon
+                        size={15}
+                        className="shrink-0"
+                        style={{ color: isActive ? '#fff' : 'rgba(255,255,255,0.45)' }}
+                      />
                       {sidebarOpen && (
-                        <span className="text-[13px] font-medium whitespace-nowrap">{item.label}</span>
+                        <span className="text-[13px] font-medium whitespace-nowrap leading-none">
+                          {item.label}
+                        </span>
                       )}
                     </>
                   )}
@@ -115,15 +133,24 @@ export function Sidebar() {
           ))}
         </nav>
 
-        {/* Collapse toggle (desktop) */}
-        <div className="hidden lg:flex items-center justify-end px-2 py-3 border-t border-[var(--color-hairline)]">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-1.5 rounded-[var(--radius-base)] text-[var(--color-faint)] hover:bg-[var(--color-bg)] hover:text-[var(--color-ink)] transition-colors"
+        {/* User */}
+        {sidebarOpen && (
+          <div
+            className="px-3 py-4 shrink-0"
+            style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
           >
-            {sidebarOpen ? <ChevronLeft size={15} /> : <ChevronRight size={15} />}
-          </button>
-        </div>
+            <button className="flex items-center gap-2.5 w-full px-1 py-1 rounded-[10px] transition-colors hover:bg-white/5 group">
+              <div className="w-7 h-7 rounded-full bg-[var(--color-purple)] flex items-center justify-center text-[11px] font-bold text-white shrink-0">
+                CR
+              </div>
+              <div className="flex-1 min-w-0 text-left">
+                <div className="text-[12px] font-semibold text-white truncate leading-tight">Cam Rivera</div>
+                <div className="text-[10px] truncate leading-tight" style={{ color: 'rgba(255,255,255,0.4)' }}>Founder</div>
+              </div>
+              <ChevronDown size={13} style={{ color: 'rgba(255,255,255,0.3)' }} className="shrink-0" />
+            </button>
+          </div>
+        )}
       </aside>
     </>
   )

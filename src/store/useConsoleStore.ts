@@ -1,9 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import {
-  Lead, LeadStage, Client, Invite, Project, Invoice, Campaign,
-  mockLeads, mockClients, mockInvites, mockProjects, mockInvoices, mockCampaigns
-} from '@/data/mock'
+import type { Lead, LeadStage, Client, Invite, Project, Invoice, Campaign } from '@/data/mock'
+import { mockLeads, mockClients, mockInvites, mockProjects, mockInvoices, mockCampaigns } from '@/data/mock'
 
 interface ConsoleStore {
   // Leads

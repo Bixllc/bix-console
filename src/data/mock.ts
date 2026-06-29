@@ -120,7 +120,7 @@ export const mockLeads: Lead[] = [
     id: 'l1', business: 'Glow Beauty Bar', contact: 'Maya Johnson',
     email: 'maya@glowbeautybar.com', phone: '(214) 555-0192', value: 3500,
     stage: 'proposal', temperature: 'hot', source: 'instagram', industry: 'Beauty',
-    notes: 'Needs booking system + rebrand. DM'd us via Instagram. Ready to move.',
+    notes: "Needs booking system + rebrand. DM'd us via Instagram. Ready to move.",
     createdAt: '2026-06-10', updatedAt: '2026-06-28',
     activities: [
       { id: 'a1', type: 'note', content: 'Initial DM received. Very interested.', createdAt: '2026-06-10' },
