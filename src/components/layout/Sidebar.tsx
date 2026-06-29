@@ -60,45 +60,48 @@ export function Sidebar() {
           borderRight: '1px solid var(--bx-line)',
         }}
       >
-        {/* Logo */}
-        <div
-          className="flex items-center gap-2.5 px-4 shrink-0"
-          style={{ height: 'var(--bx-topbar)', borderBottom: '1px solid var(--bx-line)' }}
-        >
-          <div
-            className="w-8 h-8 rounded-[var(--bx-r)] flex items-center justify-center shrink-0"
-            style={{ background: 'var(--bx-purple)' }}
-          >
-            <svg width="15" height="15" viewBox="0 0 20 20" fill="none">
-              <path d="M5 3h7a4 4 0 0 1 0 8H5V3z" stroke="white" strokeWidth="1.8" strokeLinejoin="round"/>
-              <path d="M5 11h7.5a4 4 0 0 1 0 8H5v-8z" stroke="white" strokeWidth="1.8" strokeLinejoin="round" opacity=".65"/>
-            </svg>
+        {/* Logo — matches .bx-side__top from portal.css */}
+        <div style={{
+          height: 'var(--bx-topbar)',
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '11px',
+          padding: '0 18px',
+          borderBottom: '1px solid var(--bx-line-2)',
+        }}>
+          {/* .bx-side__logo: 34px, radius 9px, purple gradient */}
+          <div style={{
+            width: 34,
+            height: 34,
+            borderRadius: 9,
+            flexShrink: 0,
+            background: 'linear-gradient(160deg, #2E1442, #442061)',
+            display: 'grid',
+            placeItems: 'center',
+            boxShadow: 'var(--bx-shadow-sm)',
+          }}>
+            <img
+              src="/bix-logo.png"
+              alt="BIX"
+              width={20}
+              height={20}
+              style={{ objectFit: 'contain', filter: 'brightness(0) invert(1)' }}
+            />
           </div>
 
           {sidebarOpen && (
             <>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-1.5">
-                  <span
-                    className="text-[14px] font-bold tracking-wide"
-                    style={{ fontFamily: 'var(--font-display)', color: 'var(--bx-ink)' }}
-                  >
-                    BIX
-                  </span>
-                  <span
-                    className="text-[9px] font-semibold px-1.5 py-0.5 rounded-[4px] tracking-wider uppercase"
-                    style={{ background: 'var(--bx-purple)', color: 'var(--bx-surface)' }}
-                  >
-                    Admin
-                  </span>
-                </div>
-                <div className="text-[10px] tracking-wide" style={{ color: 'var(--bx-muted)' }}>
-                  Agency Console
-                </div>
+              {/* .bx-side__name */}
+              <div style={{ lineHeight: 1.15, minWidth: 0, flex: 1 }}>
+                <b style={{ fontFamily: 'Poppins, sans-serif', fontWeight: 600, fontSize: 14, display: 'block', color: 'var(--bx-ink)' }}>
+                  BIX
+                </b>
+                <span style={{ fontSize: 11, color: 'var(--bx-muted)' }}>Agency Console</span>
               </div>
               <button
-                className="p-1 lg:hidden"
-                style={{ color: 'var(--bx-faint)' }}
+                className="lg:hidden"
+                style={{ color: 'var(--bx-faint)', padding: 4 }}
                 onClick={() => setSidebarOpen(false)}
               >
                 <X size={15} />
