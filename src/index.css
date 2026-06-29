@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Montserrat:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
+/* Tailwind font tokens — must come right after @import */
+@theme {
+  --font-display: 'Poppins', sans-serif;
+  --font-sans:    'Montserrat', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+}
+
 /* ─── BIX Design Tokens ──────────────────────────────────────────────────── */
 :root {
   /* Surfaces */
@@ -50,7 +57,7 @@
   --bx-sidebar: 252px;
   --bx-topbar:  64px;
 
-  /* Legacy aliases (keep existing components working) */
+  /* Legacy aliases so existing components keep working */
   --color-purple:       var(--bx-purple);
   --color-purple-deep:  var(--bx-purple-2);
   --color-purple-soft:  var(--bx-purple-soft);
@@ -79,12 +86,6 @@
   --radius-pill:        var(--bx-pill);
 }
 
-@theme {
-  --font-display: 'Poppins', sans-serif;
-  --font-sans:    'Montserrat', sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
-}
-
 /* ─── Reset ──────────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -109,13 +110,13 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bx-line); border-radius: 99px; }
 
-/* ─── View container ─────────────────────────────────────────────────────── */
-.bx-view         { padding: 28px 30px 96px; }
-.bx-view__inner  { max-width: 1320px; margin: 0 auto; }
-
-/* FAB always above cards */
-.bx-fab { z-index: 140; }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ─── View container ─────────────────────────────────────────────────────── */
+.bx-view        { padding: 28px 30px 96px; width: 100%; }
+.bx-view__inner { max-width: 1320px; margin: 0 auto; }
+
+/* FAB always above cards */
+.bx-fab { z-index: 140 !important; }
