@@ -17,11 +17,9 @@ function Layout({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
-        <main className="flex-1 overflow-y-auto">
-          <div style={{ padding: '28px 30px 96px', width: '100%', boxSizing: 'border-box' }}>
-            <div style={{ maxWidth: '1320px', margin: '0 auto' }}>
-              {children}
-            </div>
+        <main style={{ flex: 1, overflowY: 'auto', width: '100%' }}>
+          <div style={{ maxWidth: '1320px', margin: '0 auto', padding: '28px 30px 96px' }}>
+            {children}
           </div>
         </main>
       </div>
