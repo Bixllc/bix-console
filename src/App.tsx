@@ -26,10 +26,7 @@ function Layout({ children }: { children: React.ReactNode }) {
         <Topbar />
         {/* portal.css: .bx-view = flex:1, overflow-y:auto, padding 28 30 60 */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '28px 30px 60px' }}>
-          {/* portal.css: .bx-view__inner--wide = max-width 1320, margin auto */}
-          <div style={{ maxWidth: '1320px', margin: '0 auto' }}>
-            {children}
-          </div>
+          {children}
         </main>
       </div>
     </div>
