@@ -38,13 +38,13 @@ function KpiCard({ icon, accent, delta, value, label }: {
         <div className="w-9 h-9 rounded-[10px] flex items-center justify-center" style={{ background: accent + '18', color: accent }}>
           {icon}
         </div>
-        <span className="text-[11px] font-semibold text-[#1E8A5E] flex items-center gap-0.5">
+        <span className="font-semibold flex items-center gap-0.5" style={{ fontSize: 12, color: 'var(--bx-green)', fontFamily: "'JetBrains Mono', monospace" }}>
           <svg width="10" height="10" viewBox="0 0 10 10"><path d="M5 8V2M2 5l3-3 3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
           {delta}%
         </span>
       </div>
       <div>
-        <div className="text-[28px] font-semibold font-[var(--font-display)] text-[var(--color-ink)] leading-none">{value}</div>
+        <div className="font-[var(--font-display)] text-[var(--color-ink)] leading-none" style={{ fontSize: 30, fontWeight: 500 }}>{value}</div>
         <div className="text-[12px] text-[var(--color-muted)] mt-1.5">{label}</div>
       </div>
     </Card>
@@ -127,7 +127,7 @@ export function Dashboard() {
           <p className="text-[11px] font-semibold tracking-[0.12em] uppercase text-[var(--color-muted)] mb-1.5">
             {greeting}, Cam
           </p>
-          <h1 className="text-[32px] font-semibold text-[var(--color-ink)] leading-tight font-[var(--font-display)]">
+          <h1 className="text-[var(--color-ink)] leading-tight font-[var(--font-display)]" style={{ fontSize: 30, fontWeight: 600 }}>
             Here's how{' '}
             <span style={{ color: 'var(--color-purple)' }}>BIX LLC</span>
             {' '}is doing
@@ -179,7 +179,7 @@ export function Dashboard() {
           {/* Pipeline this month */}
           <Card>
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-[15px] font-semibold text-[var(--color-ink)]">Pipeline this month</h3>
+              <h3 className="font-semibold text-[var(--color-ink)]" style={{ fontSize: '14.5px' }}>Pipeline this month</h3>
               <button
                 onClick={() => navigate('/leads')}
                 className="text-[12px] font-medium text-[var(--color-purple)] hover:underline flex items-center gap-1"
@@ -199,7 +199,7 @@ export function Dashboard() {
           {/* Recent activity */}
           <Card>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[15px] font-semibold text-[var(--color-ink)]">Recent activity</h3>
+              <h3 className="font-semibold text-[var(--color-ink)]" style={{ fontSize: '14.5px' }}>Recent activity</h3>
               <span className="text-[12px] text-[var(--color-muted)]">Across the agency</span>
             </div>
             {activityItems.map((a, i) => (
@@ -227,7 +227,7 @@ export function Dashboard() {
           {/* Hot leads */}
           <Card>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[15px] font-semibold text-[var(--color-ink)]">Hot leads</h3>
+              <h3 className="font-semibold text-[var(--color-ink)]" style={{ fontSize: '14.5px' }}>Hot leads</h3>
               <span className="flex items-center gap-1 text-[11px] font-semibold" style={{ color: 'var(--color-danger)' }}>
                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-danger)' }} />
                 {hotLeads.length} to action
@@ -260,7 +260,7 @@ export function Dashboard() {
           {/* Upcoming */}
           <Card>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[15px] font-semibold text-[var(--color-ink)]">Upcoming</h3>
+              <h3 className="font-semibold text-[var(--color-ink)]" style={{ fontSize: '14.5px' }}>Upcoming</h3>
               <button onClick={() => navigate('/calendar')} className="text-[12px] font-medium text-[var(--color-purple)] hover:underline flex items-center gap-1">
                 All <ArrowRight size={12} />
               </button>
@@ -301,7 +301,7 @@ export function Dashboard() {
               <div className="w-9 h-9 rounded-[10px] flex items-center justify-center" style={{ background: '#1E8A5E18', color: '#1E8A5E' }}>
                 <DollarSign size={16} />
               </div>
-              <h3 className="text-[15px] font-semibold text-[var(--color-ink)]">Revenue this month</h3>
+              <h3 className="font-semibold text-[var(--color-ink)]" style={{ fontSize: '14.5px' }}>Revenue this month</h3>
             </div>
             <div className="text-[32px] font-semibold font-[var(--font-display)] text-[var(--color-ink)] leading-none mb-4">
               $23,800

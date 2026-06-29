@@ -86,22 +86,31 @@
   --radius-pill:        var(--bx-pill);
 }
 
-/* ─── Reset ──────────────────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: var(--font-sans);
-  background: var(--bx-bg);
-  color: var(--bx-ink);
-  -webkit-font-smoothing: antialiased;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
-  font-weight: 600;
+/* ─── Base typography — in @layer base so it runs after Preflight but
+   still wins within the layer (later rules in same layer beat earlier) ── */
+@layer base {
+  html, body {
+    font-size: 14px;
+    line-height: 1.5;
+    font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+    color: #14101F;          /* --bx-ink */
+    background: #F6F5F8;     /* --bx-bg */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  h1, h2, h3, h4 {
+    font-family: 'Poppins', system-ui, sans-serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: #14101F;
+  }
+  p { margin: 0; }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; }
 }
 
 #root { display: flex; height: 100vh; overflow: hidden; }

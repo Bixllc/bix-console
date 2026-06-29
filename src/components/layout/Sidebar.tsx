@@ -143,30 +143,34 @@ export function Sidebar() {
           ))}
         </nav>
 
-        {/* User */}
+        {/* User footer — bx-side__foot */}
         {sidebarOpen && (
-          <div className="px-3 py-4 shrink-0" style={{ borderTop: '1px solid var(--bx-line)' }}>
+          <div style={{ padding: 12, borderTop: '1px solid var(--bx-line-2)', shrink: 0 }}>
             <button
-              className="flex items-center gap-2.5 w-full px-1 py-1 rounded-[var(--bx-r)] transition-colors group"
-              style={{ background: 'transparent' }}
+              className="bx-side__user w-full text-left"
+              style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 8, borderRadius: 8, cursor: 'pointer', background: 'transparent', border: 0, width: '100%', transition: 'background 160ms' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'var(--bx-bg)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
-              <div
-                className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0"
-                style={{ background: 'var(--bx-purple)', color: 'var(--bx-surface)' }}
-              >
+              {/* Avatar — bx-av */}
+              <div style={{
+                width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
+                background: 'linear-gradient(160deg, #2E1442, #442061)',
+                color: '#fff', fontSize: 12, fontWeight: 600,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
                 CR
               </div>
-              <div className="flex-1 min-w-0 text-left">
-                <div className="text-[12px] font-semibold truncate leading-tight" style={{ color: 'var(--bx-ink)' }}>
+              {/* Text — bx-side__user-meta */}
+              <div style={{ minWidth: 0, flex: 1, lineHeight: 1.2 }}>
+                <b style={{ display: 'block', fontSize: 13, fontWeight: 600, color: 'var(--bx-ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   Cam Rivera
-                </div>
-                <div className="text-[10px] truncate leading-tight" style={{ color: 'var(--bx-faint)' }}>
+                </b>
+                <span style={{ display: 'block', fontSize: '11.5px', color: 'var(--bx-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   Founder
-                </div>
+                </span>
               </div>
-              <ChevronDown size={13} style={{ color: 'var(--bx-faint)' }} className="shrink-0" />
+              <ChevronDown size={16} style={{ color: 'var(--bx-faint)', flexShrink: 0 }} />
             </button>
           </div>
         )}
