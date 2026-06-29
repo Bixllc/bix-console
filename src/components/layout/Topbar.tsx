@@ -22,7 +22,18 @@ export function Topbar() {
   const [searchFocused, setSearchFocused] = useState(false)
 
   return (
-    <header className="flex items-center gap-4 h-[60px] px-5 bg-[var(--color-surface)] shrink-0 sticky top-0 z-20" style={{ borderBottom: '1px solid var(--color-hairline)' }}>
+    <header
+      className="flex items-center shrink-0 z-20"
+      style={{
+        height: 'var(--bx-topbar)',
+        gap: '14px',
+        padding: '0 26px',
+        background: 'rgba(246,245,248,0.82)',
+        backdropFilter: 'blur(14px) saturate(140%)',
+        WebkitBackdropFilter: 'blur(14px) saturate(140%)',
+        borderBottom: '1px solid var(--bx-line)',
+      }}
+    >
       {/* Mobile hamburger */}
       <button
         className="lg:hidden p-1.5 rounded-[var(--radius-sm)] text-[var(--color-muted)] hover:bg-[var(--color-bg)]"
