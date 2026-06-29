@@ -13,11 +13,21 @@ import { SettingsPage } from '@/pages/Settings'
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[var(--color-bg)]">
+    /* portal.css: .bx-app.is-on = grid sidebar|1fr, height 100vh */
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'var(--bx-sidebar) 1fr',
+      height: '100vh',
+      overflow: 'hidden',
+      background: 'var(--bx-bg)',
+    }}>
       <Sidebar />
-      <div className="flex flex-col flex-1 min-w-0" style={{ height: '100vh', overflow: 'hidden' }}>
+      {/* portal.css: .bx-main = flex-col, height 100vh, min-width 0 */}
+      <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, height: '100vh', overflow: 'hidden' }}>
         <Topbar />
+        {/* portal.css: .bx-view = flex:1, overflow-y:auto, padding 28 30 60 */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '28px 30px 60px' }}>
+          {/* portal.css: .bx-view__inner--wide = max-width 1320, margin auto */}
           <div style={{ maxWidth: '1320px', margin: '0 auto' }}>
             {children}
           </div>
