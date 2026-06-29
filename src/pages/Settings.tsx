@@ -1,151 +1,103 @@
 import React, { useState } from 'react'
-import { User, Building2, Plug, Bell, CreditCard, Check, ExternalLink } from 'lucide-react'
 import {
-  Badge, Button, Card, CardHeader, Field, Input, Textarea,
+  LayoutGrid, Users, Link2, Crosshair, Bell, CreditCard,
+  Plus, Check, Download, Sparkles,
+} from 'lucide-react'
+import {
+  Badge, Button, Card, Field, Input,
   Toggle, useToast,
 } from '@/components/ui'
 
-// ─── Tab Navigation ───────────────────────────────────────────────────────────
+// ─── Tab config ───────────────────────────────────────────────────────────────
 
-type Tab = 'profile' | 'agency' | 'integrations' | 'notifications' | 'billing'
+type Tab = 'agency' | 'team' | 'integrations' | 'lead-capture' | 'notifications' | 'billing'
 
 const TABS: { key: Tab; label: string; icon: React.ReactNode }[] = [
-  { key: 'profile',       label: 'Profile',       icon: <User size={14} />       },
-  { key: 'agency',        label: 'Agency',        icon: <Building2 size={14} />  },
-  { key: 'integrations',  label: 'Integrations',  icon: <Plug size={14} />       },
-  { key: 'notifications', label: 'Notifications', icon: <Bell size={14} />       },
-  { key: 'billing',       label: 'Billing',       icon: <CreditCard size={14} /> },
+  { key: 'agency',         label: 'Agency',        icon: <LayoutGrid size={14} /> },
+  { key: 'team',           label: 'Team',          icon: <Users size={14} />      },
+  { key: 'integrations',   label: 'Integrations',  icon: <Link2 size={14} />      },
+  { key: 'lead-capture',   label: 'Lead capture',  icon: <Crosshair size={14} />  },
+  { key: 'notifications',  label: 'Notifications', icon: <Bell size={14} />       },
+  { key: 'billing',        label: 'Billing',       icon: <CreditCard size={14} /> },
 ]
-
-// ─── Profile Tab ──────────────────────────────────────────────────────────────
-
-function ProfileTab() {
-  const toast = useToast()
-  const [form, setForm] = useState({
-    name: 'Sheneska Williams',
-    email: 'admin@bixllc.net',
-    role: 'Agency Owner',
-    phone: '(214) 555-0100',
-    bio: 'Founder of Bix LLC — helping local businesses grow their online presence.',
-  })
-
-  return (
-    <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader title="Profile Information" subtitle="Your personal details" />
-
-        {/* Avatar */}
-        <div className="flex items-center gap-4 mb-6 pb-6 border-b border-[var(--color-hairline)]">
-          <div className="w-16 h-16 rounded-full bg-[var(--color-purple)] flex items-center justify-center text-white text-[22px] font-bold font-[var(--font-display)]">
-            S
-          </div>
-          <div>
-            <p className="text-[14px] font-semibold text-[var(--color-ink)]">{form.name}</p>
-            <p className="text-[12px] text-[var(--color-muted)]">{form.email}</p>
-            <Button variant="ghost" size="sm" className="mt-1 -ml-2">Change photo</Button>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Full Name">
-            <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
-          </Field>
-          <Field label="Email Address">
-            <Input value={form.email} readOnly className="opacity-60 cursor-not-allowed" />
-          </Field>
-          <Field label="Role">
-            <Input value={form.role} onChange={e => setForm(f => ({ ...f, role: e.target.value }))} />
-          </Field>
-          <Field label="Phone">
-            <Input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
-          </Field>
-          <div className="col-span-2">
-            <Field label="Bio">
-              <Textarea
-                value={form.bio}
-                onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
-                rows={3}
-              />
-            </Field>
-          </div>
-        </div>
-
-        <div className="flex justify-end mt-4 pt-4 border-t border-[var(--color-hairline)]">
-          <Button variant="primary" onClick={() => toast('Profile saved')}>Save Changes</Button>
-        </div>
-      </Card>
-
-      {/* Password */}
-      <Card>
-        <CardHeader title="Password" subtitle="Update your password" />
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Current Password">
-            <Input type="password" placeholder="••••••••" />
-          </Field>
-          <div />
-          <Field label="New Password">
-            <Input type="password" placeholder="••••••••" />
-          </Field>
-          <Field label="Confirm New Password">
-            <Input type="password" placeholder="••••••••" />
-          </Field>
-        </div>
-        <div className="flex justify-end mt-4 pt-4 border-t border-[var(--color-hairline)]">
-          <Button variant="secondary" onClick={() => toast('Password updated')}>Update Password</Button>
-        </div>
-      </Card>
-    </div>
-  )
-}
 
 // ─── Agency Tab ───────────────────────────────────────────────────────────────
 
 function AgencyTab() {
   const toast = useToast()
   const [form, setForm] = useState({
-    name: 'Bix LLC',
-    website: 'https://bixllc.net',
-    tagline: 'We build websites that work as hard as you do.',
-    email: 'hello@bixllc.net',
-    phone: '(214) 555-0100',
-    city: 'Dallas, TX',
-    description: 'Bix LLC is a boutique web design & growth agency specializing in helping local businesses build a powerful online presence.',
+    name: 'BIX LLC', founder: 'Cam Rivera', replyEmail: 'cam@bixllc.net', domain: 'bixllc.net',
   })
 
   return (
-    <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader title="Agency Details" subtitle="Your business information" />
-        <div className="grid grid-cols-2 gap-4">
-          <Field label="Agency Name">
-            <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
-          </Field>
-          <Field label="Website">
-            <Input type="url" value={form.website} onChange={e => setForm(f => ({ ...f, website: e.target.value }))} />
-          </Field>
-          <div className="col-span-2">
-            <Field label="Tagline">
-              <Input value={form.tagline} onChange={e => setForm(f => ({ ...f, tagline: e.target.value }))} />
-            </Field>
+    <div className="flex flex-col gap-5">
+      <div>
+        <h2 className="text-[18px] font-semibold text-[var(--color-ink)]">Agency profile</h2>
+        <p className="text-[13px] text-[var(--color-muted)] mt-0.5">
+          Appears on invoices, proposals, and outgoing campaigns.
+        </p>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Agency name">
+          <Input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} />
+        </Field>
+        <Field label="Founder">
+          <Input value={form.founder} onChange={e => setForm(f => ({ ...f, founder: e.target.value }))} />
+        </Field>
+        <Field label="Reply-to email">
+          <Input type="email" value={form.replyEmail} onChange={e => setForm(f => ({ ...f, replyEmail: e.target.value }))} />
+        </Field>
+        <Field label="Sending domain">
+          <Input value={form.domain} onChange={e => setForm(f => ({ ...f, domain: e.target.value }))} />
+        </Field>
+      </div>
+      <div className="pt-2 border-t border-[var(--color-hairline)]">
+        <Button variant="primary" onClick={() => toast('Agency profile saved')}>
+          <Check size={13} /> Save changes
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+// ─── Team Tab ─────────────────────────────────────────────────────────────────
+
+const TEAM_MEMBERS = [
+  { name: 'Cam Rivera',   role: 'Founder · Owner',   initials: 'CR', color: '#442061', badge: 'Owner'  },
+  { name: 'Marcus Bell',  role: 'Lead Engineer',     initials: 'MB', color: '#2E89E6', badge: 'Member' },
+  { name: 'Dana Okafor',  role: 'Designer',          initials: 'DO', color: '#1E8A5E', badge: 'Member' },
+  { name: 'Priya Shah',   role: 'Project Lead',      initials: 'PS', color: '#B5810F', badge: 'Member' },
+]
+
+function TeamTab() {
+  const toast = useToast()
+  return (
+    <div className="flex flex-col gap-5">
+      <div className="flex items-center justify-between">
+        <h2 className="text-[18px] font-semibold text-[var(--color-ink)]">Team</h2>
+        <Button variant="secondary" size="sm" onClick={() => toast('Invite flow coming soon', 'info')}>
+          <Plus size={13} /> Invite
+        </Button>
+      </div>
+      <Card padding={false}>
+        {TEAM_MEMBERS.map((m) => (
+          <div
+            key={m.name}
+            className="flex items-center gap-4 px-5 py-4 border-b border-[var(--color-hairline)] last:border-0"
+          >
+            <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ background: m.color }}>
+              <span className="text-[13px] font-bold text-white">{m.initials}</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[14px] font-semibold text-[var(--color-ink)]">{m.name}</p>
+              <p className="text-[12px] text-[var(--color-muted)] mt-0.5">{m.role}</p>
+            </div>
+            <Badge variant={m.badge === 'Owner' ? 'purple' : 'muted'}>
+              {m.badge === 'Owner' ? '• Owner' : '• Member'}
+            </Badge>
           </div>
-          <Field label="Contact Email">
-            <Input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
-          </Field>
-          <Field label="Phone">
-            <Input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} />
-          </Field>
-          <Field label="Location">
-            <Input value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} />
-          </Field>
-          <div className="col-span-2">
-            <Field label="Agency Description">
-              <Textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} />
-            </Field>
-          </div>
-        </div>
-        <div className="flex justify-end mt-4 pt-4 border-t border-[var(--color-hairline)]">
-          <Button variant="primary" onClick={() => toast('Agency settings saved')}>Save Changes</Button>
-        </div>
+        ))}
       </Card>
     </div>
   )
@@ -153,119 +105,105 @@ function AgencyTab() {
 
 // ─── Integrations Tab ─────────────────────────────────────────────────────────
 
-interface Integration {
-  id: string
-  name: string
-  description: string
-  logo: string
-  connected: boolean
-  url?: string
-}
-
-const DEFAULT_INTEGRATIONS: Integration[] = [
-  { id: 'calendly',  name: 'Calendly',   description: 'Booking links & scheduling automation',  logo: '📅', connected: true,  url: 'https://calendly.com/bixllc' },
-  { id: 'supabase',  name: 'Supabase',   description: 'Database & auth backend',                 logo: '🛢️', connected: true  },
-  { id: 'stripe',    name: 'Stripe',     description: 'Payment processing & subscriptions',      logo: '💳', connected: false },
-  { id: 'meta',      name: 'Meta Ads',   description: 'Facebook & Instagram ad campaigns',       logo: '📱', connected: false },
+const INTEGRATIONS = [
+  { id: 'gmail',     name: 'Gmail / Google Workspace', desc: 'Send campaigns from your domain', connected: true  },
+  { id: 'twilio',    name: 'Twilio',                   desc: 'SMS sending',                      connected: true  },
+  { id: 'stripe',    name: 'Stripe',                   desc: 'Invoices & payments',              connected: true  },
+  { id: 'instagram', name: 'Instagram',                desc: 'Social DM outreach',               connected: false },
+  { id: 'zapier',    name: 'Zapier',                   desc: 'Automations',                      connected: false },
+  { id: 'calendly',  name: 'Calendly',                 desc: 'Booking links',                    connected: true  },
 ]
 
 function IntegrationsTab() {
   const toast = useToast()
-  const [integrations, setIntegrations] = useState(DEFAULT_INTEGRATIONS)
+  const [integrations, setIntegrations] = useState(INTEGRATIONS)
 
-  function toggleIntegration(id: string, value: boolean) {
-    setIntegrations(prev => prev.map(i => i.id === id ? { ...i, connected: value } : i))
-    const name = integrations.find(i => i.id === id)?.name ?? id
-    toast(value ? `${name} connected` : `${name} disconnected`, value ? 'success' : 'info')
-  }
-
-  function connectIntegration(id: string) {
+  function connect(id: string) {
     setIntegrations(prev => prev.map(i => i.id === id ? { ...i, connected: true } : i))
     const name = integrations.find(i => i.id === id)?.name ?? id
-    toast(`${name} connected!`)
+    toast(`${name} connected!`, 'success')
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      {integrations.map(int => (
-        <Card key={int.id}>
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-[var(--radius-base)] bg-[var(--color-bg)] border border-[var(--color-hairline)] flex items-center justify-center text-[24px]">
-                {int.logo}
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="text-[14px] font-semibold text-[var(--color-ink)]">{int.name}</p>
-                  {int.connected && (
-                    <Badge variant="success">
-                      <Check size={9} /> Connected
-                    </Badge>
-                  )}
-                </div>
-                <p className="text-[12px] text-[var(--color-muted)] mt-0.5">{int.description}</p>
-                {int.url && int.connected && (
-                  <a
-                    href={int.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center gap-1 text-[11px] text-[var(--color-purple)] mt-1 hover:underline"
-                  >
-                    <ExternalLink size={10} /> {int.url}
-                  </a>
-                )}
-              </div>
+    <div className="flex flex-col gap-5">
+      <h2 className="text-[18px] font-semibold text-[var(--color-ink)]">Integrations</h2>
+      <Card padding={false}>
+        {integrations.map(int => (
+          <div key={int.id} className="flex items-center gap-4 px-5 py-4 border-b border-[var(--color-hairline)] last:border-0">
+            <div className="w-9 h-9 rounded-[var(--radius-base)] bg-[var(--color-bg)] border border-[var(--color-hairline)] flex items-center justify-center flex-shrink-0">
+              <Link2 size={14} className="text-[var(--color-muted)]" />
             </div>
-
-            <div className="flex items-center gap-3 flex-shrink-0">
-              {int.connected ? (
-                <>
-                  <Toggle
-                    checked={int.connected}
-                    onChange={v => toggleIntegration(int.id, v)}
-                  />
-                  <Button variant="ghost" size="sm" onClick={() => toggleIntegration(int.id, false)}>
-                    Disconnect
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Toggle checked={false} onChange={v => { if (v) connectIntegration(int.id) }} />
-                  <Button variant="secondary" size="sm" onClick={() => connectIntegration(int.id)}>
-                    Connect
-                  </Button>
-                </>
-              )}
+            <div className="flex-1 min-w-0">
+              <p className="text-[14px] font-semibold text-[var(--color-ink)]">{int.name}</p>
+              <p className="text-[12px] text-[var(--color-muted)] mt-0.5">{int.desc}</p>
             </div>
+            {int.connected ? (
+              <Badge variant="success">• Connected</Badge>
+            ) : (
+              <Button variant="secondary" size="sm" onClick={() => connect(int.id)}>Connect</Button>
+            )}
           </div>
-        </Card>
-      ))}
+        ))}
+      </Card>
+    </div>
+  )
+}
+
+// ─── Lead Capture Tab ─────────────────────────────────────────────────────────
+
+function LeadCaptureTab() {
+  const toast = useToast()
+  const [autoEnroll, setAutoEnroll] = useState(true)
+
+  const SOURCES = [
+    { name: 'Website contact form', status: 'Active',  statusColor: 'var(--color-success)' },
+    { name: 'Book-a-call form',     status: 'Active',  statusColor: 'var(--color-success)' },
+    { name: 'CSV import',           status: 'Manual',  statusColor: 'var(--color-muted)'   },
+  ]
+
+  return (
+    <div className="flex flex-col gap-5">
+      <div>
+        <h2 className="text-[18px] font-semibold text-[var(--color-ink)]">Lead capture</h2>
+        <p className="text-[13px] text-[var(--color-muted)] mt-0.5">
+          Where new leads come from and how they're handled.
+        </p>
+      </div>
+      <Card padding={false}>
+        {SOURCES.map((s) => (
+          <div key={s.name} className="flex items-center justify-between px-5 py-4 border-b border-[var(--color-hairline)] last:border-0">
+            <p className="text-[14px] font-medium text-[var(--color-ink)]">{s.name}</p>
+            <span className="text-[13px] font-semibold" style={{ color: s.statusColor }}>• {s.status}</span>
+          </div>
+        ))}
+        <div className="px-5 py-4 border-t border-[var(--color-hairline)]">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[14px] font-semibold text-[var(--color-ink)]">Auto-enroll new leads in welcome sequence</p>
+              <p className="text-[12px] text-[var(--color-muted)] mt-0.5">New website leads start nurturing immediately</p>
+            </div>
+            <Toggle checked={autoEnroll} onChange={setAutoEnroll} />
+          </div>
+        </div>
+      </Card>
+      <Button variant="secondary" onClick={() => toast('Import coming soon', 'info')}>
+        <Download size={14} /> Import a lead list
+      </Button>
     </div>
   )
 }
 
 // ─── Notifications Tab ────────────────────────────────────────────────────────
 
-interface NotifSetting {
-  id: string
-  label: string
-  description: string
-  enabled: boolean
-}
-
-const DEFAULT_NOTIFS: NotifSetting[] = [
-  { id: 'new-lead',      label: 'New Lead',              description: 'When a new lead is added to the pipeline',        enabled: true  },
-  { id: 'lead-stage',    label: 'Lead Stage Change',     description: 'When a lead moves to a new stage',                enabled: true  },
-  { id: 'invoice-paid',  label: 'Invoice Paid',          description: 'When a client pays an invoice',                   enabled: true  },
-  { id: 'invoice-over',  label: 'Invoice Overdue',       description: 'When an invoice becomes overdue',                 enabled: true  },
-  { id: 'meeting-24h',   label: 'Meeting Reminder (24h)', description: 'Reminder 24 hours before a meeting',             enabled: true  },
-  { id: 'meeting-1h',    label: 'Meeting Reminder (1h)',  description: 'Reminder 1 hour before a meeting',               enabled: false },
-  { id: 'client-invite', label: 'Client Accepted Invite', description: 'When a client accepts their invitation',         enabled: true  },
-  { id: 'campaign-done', label: 'Campaign Completed',    description: 'When a campaign finishes sending',                enabled: false },
+const DEFAULT_NOTIFS = [
+  { id: 'new-leads',    label: 'New leads',        desc: 'When a lead is captured',           enabled: true  },
+  { id: 'replies',      label: 'Replies',          desc: 'When a lead replies to outreach',   enabled: true  },
+  { id: 'campaigns',    label: 'Campaign reports', desc: 'When a campaign finishes',           enabled: true  },
+  { id: 'invoices',     label: 'Overdue invoices', desc: 'Payment past due',                   enabled: true  },
+  { id: 'digest',       label: 'Weekly digest',    desc: 'Monday morning summary',             enabled: false },
 ]
 
 function NotificationsTab() {
-  const toast = useToast()
   const [notifs, setNotifs] = useState(DEFAULT_NOTIFS)
 
   function toggle(id: string, v: boolean) {
@@ -273,23 +211,18 @@ function NotificationsTab() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <Card>
-        <CardHeader title="Email Notifications" subtitle="Control what emails you receive from Bix" />
-        <div className="flex flex-col divide-y divide-[var(--color-hairline)]">
-          {notifs.map(n => (
-            <div key={n.id} className="flex items-center justify-between py-3.5 gap-4">
-              <div>
-                <p className="text-[13px] font-medium text-[var(--color-ink)]">{n.label}</p>
-                <p className="text-[12px] text-[var(--color-muted)] mt-0.5">{n.description}</p>
-              </div>
-              <Toggle checked={n.enabled} onChange={v => toggle(n.id, v)} />
+    <div className="flex flex-col gap-5">
+      <h2 className="text-[18px] font-semibold text-[var(--color-ink)]">Notifications</h2>
+      <Card padding={false}>
+        {notifs.map(n => (
+          <div key={n.id} className="flex items-center justify-between gap-4 px-5 py-4 border-b border-[var(--color-hairline)] last:border-0">
+            <div>
+              <p className="text-[14px] font-semibold text-[var(--color-ink)]">{n.label}</p>
+              <p className="text-[12px] text-[var(--color-muted)] mt-0.5">{n.desc}</p>
             </div>
-          ))}
-        </div>
-        <div className="flex justify-end mt-4 pt-4 border-t border-[var(--color-hairline)]">
-          <Button variant="primary" onClick={() => toast('Notification preferences saved')}>Save Preferences</Button>
-        </div>
+            <Toggle checked={n.enabled} onChange={v => toggle(n.id, v)} />
+          </div>
+        ))}
       </Card>
     </div>
   )
@@ -299,91 +232,31 @@ function NotificationsTab() {
 
 function BillingTab() {
   const toast = useToast()
-
-  const PLAN_FEATURES = [
-    'Unlimited leads & pipeline',
-    'Up to 10 active clients',
-    'Campaign composer & AI drafts',
-    'Calendly integration',
-    'Supabase backend',
-    'Invoice management',
-    'Priority support',
-  ]
-
   return (
-    <div className="flex flex-col gap-4">
-      {/* Current Plan */}
+    <div className="flex flex-col gap-5">
+      <h2 className="text-[18px] font-semibold text-[var(--color-ink)]">Billing</h2>
       <Card>
         <div className="flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-[16px] font-semibold text-[var(--color-ink)]">Agency Pro</h3>
-              <Badge variant="purple">Current Plan</Badge>
+              <h3 className="text-[16px] font-semibold text-[var(--color-ink)]">Growth Plan</h3>
+              <Badge variant="purple">Current</Badge>
             </div>
             <p className="text-[13px] text-[var(--color-muted)]">
-              Full-featured agency workspace for growing teams.
+              Full-featured agency workspace with campaigns & client management.
             </p>
             <p className="text-[28px] font-bold font-[var(--font-mono)] text-[var(--color-ink)] mt-3">
-              $97<span className="text-[14px] font-medium text-[var(--color-muted)]">/month</span>
+              $850<span className="text-[14px] font-medium text-[var(--color-muted)]">/mo</span>
             </p>
           </div>
           <Button variant="secondary" onClick={() => toast('Upgrade options coming soon', 'info')}>
-            Upgrade Plan
+            Upgrade
           </Button>
         </div>
-
-        <div className="mt-5 pt-4 border-t border-[var(--color-hairline)]">
-          <p className="text-[12px] font-semibold text-[var(--color-muted)] uppercase tracking-wide mb-3">What's included</p>
-          <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-            {PLAN_FEATURES.map(f => (
-              <div key={f} className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full bg-[var(--color-success-soft)] flex items-center justify-center flex-shrink-0">
-                  <Check size={9} className="text-[var(--color-success)]" />
-                </div>
-                <span className="text-[12px] text-[var(--color-ink)]">{f}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Card>
-
-      {/* Billing Details */}
-      <Card>
-        <CardHeader title="Billing Details" subtitle="Payment method & history" />
-        <div className="flex items-center justify-between py-3 border-b border-[var(--color-hairline)]">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-7 bg-[#1A1F71] rounded-[4px] flex items-center justify-center">
-              <span className="text-white text-[8px] font-bold">VISA</span>
-            </div>
-            <div>
-              <p className="text-[13px] font-medium text-[var(--color-ink)]">•••• •••• •••• 4242</p>
-              <p className="text-[11px] text-[var(--color-muted)]">Expires 12/27</p>
-            </div>
-          </div>
-          <Button variant="ghost" size="sm" onClick={() => toast('Card management coming soon', 'info')}>
-            Update
-          </Button>
-        </div>
-        <div className="pt-3">
+        <div className="mt-4 pt-4 border-t border-[var(--color-hairline)]">
           <p className="text-[12px] text-[var(--color-muted)]">
-            Next billing date: <span className="text-[var(--color-ink)] font-medium">Jul 29, 2026</span>
+            Next billing date: <span className="text-[var(--color-ink)] font-medium">Jul 28, 2026</span>
           </p>
-        </div>
-      </Card>
-
-      {/* Danger Zone */}
-      <Card>
-        <CardHeader title="Danger Zone" />
-        <div className="flex items-center justify-between py-2">
-          <div>
-            <p className="text-[13px] font-medium text-[var(--color-ink)]">Cancel Subscription</p>
-            <p className="text-[12px] text-[var(--color-muted)] mt-0.5">
-              Your workspace will remain active until end of billing period.
-            </p>
-          </div>
-          <Button variant="danger" size="sm" onClick={() => toast('Please contact support to cancel', 'error')}>
-            Cancel Plan
-          </Button>
         </div>
       </Card>
     </div>
@@ -392,36 +265,40 @@ function BillingTab() {
 
 // ─── Settings Page ────────────────────────────────────────────────────────────
 
+const TAB_COMPONENTS: Record<Tab, React.ComponentType> = {
+  agency:          AgencyTab,
+  team:            TeamTab,
+  integrations:    IntegrationsTab,
+  'lead-capture':  LeadCaptureTab,
+  notifications:   NotificationsTab,
+  billing:         BillingTab,
+}
+
 export function SettingsPage() {
-  const [activeTab, setActiveTab] = useState<Tab>('profile')
-  const ActiveTab = {
-    profile:       ProfileTab,
-    agency:        AgencyTab,
-    integrations:  IntegrationsTab,
-    notifications: NotificationsTab,
-    billing:       BillingTab,
-  }[activeTab]
+  const [activeTab, setActiveTab] = useState<Tab>('agency')
+  const toast = useToast()
+  const ActiveTab = TAB_COMPONENTS[activeTab]
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex gap-5 items-start">
 
-      {/* Header */}
-      <div>
-        <h1 className="text-[22px] font-semibold font-[var(--font-display)] text-[var(--color-ink)]">Settings</h1>
-        <p className="text-[13px] text-[var(--color-muted)] mt-0.5">Manage your profile, agency, and preferences</p>
-      </div>
-
-      {/* Tab Nav */}
-      <div className="flex items-center gap-1 border-b border-[var(--color-hairline)] -mx-0">
+      {/* Left inner nav */}
+      <div className="w-[200px] flex-shrink-0 bg-[var(--color-surface)] rounded-[var(--radius-lg)] border border-[var(--color-hairline)] shadow-[var(--shadow-sm)] overflow-hidden">
         {TABS.map(tab => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-1.5 px-4 py-2.5 text-[13px] font-medium border-b-2 -mb-px transition-all duration-150 ${
-              activeTab === tab.key
-                ? 'border-[var(--color-purple)] text-[var(--color-purple)]'
-                : 'border-transparent text-[var(--color-muted)] hover:text-[var(--color-ink)]'
-            }`}
+            className="w-full flex items-center gap-2.5 px-4 py-3 text-[13px] font-medium transition-all text-left border-b border-[var(--color-hairline)] last:border-0"
+            style={activeTab === tab.key ? {
+              borderLeft: '4px solid var(--color-purple)',
+              color: 'var(--color-purple)',
+              background: 'var(--color-purple-soft)',
+              paddingLeft: '12px',
+            } : {
+              color: 'var(--color-muted)',
+              borderLeft: '4px solid transparent',
+              paddingLeft: '12px',
+            }}
           >
             {tab.icon}
             {tab.label}
@@ -429,8 +306,18 @@ export function SettingsPage() {
         ))}
       </div>
 
-      {/* Tab Content */}
-      <ActiveTab />
+      {/* Right content */}
+      <div className="flex-1 min-w-0 bg-[var(--color-surface)] rounded-[var(--radius-lg)] border border-[var(--color-hairline)] shadow-[var(--shadow-sm)] p-6">
+        <ActiveTab />
+      </div>
+
+      {/* Sparkles FAB */}
+      <button
+        className="fixed bottom-6 right-6 z-30 flex items-center gap-2 px-4 py-2.5 bg-[var(--color-purple)] text-white rounded-full shadow-[var(--shadow-lg)] hover:bg-[var(--color-purple-deep)] transition-all text-[13px] font-semibold"
+        onClick={() => toast('Ask Bix coming soon', 'info')}
+      >
+        <Sparkles size={14} /> Ask Bix
+      </button>
 
     </div>
   )

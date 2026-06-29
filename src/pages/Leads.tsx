@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import {
-  Plus, AtSign, Globe, Mail, MessageSquare, Users,
-  Phone, FileText, ArrowRight, Calendar,
+  Filter, DollarSign, Flame, CheckCircle, Heart, UserPlus,
+  Mail, MessageCircle, Phone, Calendar, ArrowRight, FileText,
+  Zap, Wind, Sparkles,
 } from 'lucide-react'
 import {
-  Badge, Button, Drawer, Modal,
-  Field, Input, Select, Textarea,
-  useToast,
+  Button, StatCard, Drawer, Modal,
+  Field, Input, Select, Textarea, useToast,
 } from '@/components/ui'
 import { useConsoleStore } from '@/store/useConsoleStore'
 import type { Lead, LeadStage, LeadSource, Activity } from '@/data/mock'
@@ -21,48 +21,45 @@ function fmtDate(s: string) {
   return new Date(s).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-const STAGES: { key: LeadStage; label: string }[] = [
-  { key: 'new',       label: 'New'       },
-  { key: 'contacted', label: 'Contacted' },
-  { key: 'qualified', label: 'Qualified' },
-  { key: 'proposal',  label: 'Proposal'  },
-  { key: 'won',       label: 'Won'       },
+function sourceLabel(source: LeadSource): string {
+  const map: Record<LeadSource, string> = {
+    referral: 'Referral', website: 'Website form', 'cold-email': 'Imported list',
+    instagram: 'Instagram', google: 'Google', sms: 'SMS',
+  }
+  return map[source]
+}
+
+// ─── Stage Config ─────────────────────────────────────────────────────────────
+
+const STAGES: { key: LeadStage; label: string; dotColor: string }[] = [
+  { key: 'new',       label: 'New',       dotColor: '#2E89E6' },
+  { key: 'contacted', label: 'Contacted', dotColor: '#442061' },
+  { key: 'qualified', label: 'Qualified', dotColor: '#B5810F' },
+  { key: 'proposal',  label: 'Proposal',  dotColor: '#1E8A5E' },
+  { key: 'won',       label: 'Won',       dotColor: '#2ECC8B' },
 ]
 
-const stageBadgeVariant: Record<LeadStage | 'lost', 'purple' | 'blue' | 'success' | 'amber' | 'danger' | 'muted'> = {
-  new: 'muted', contacted: 'blue', qualified: 'amber',
-  proposal: 'purple', won: 'success', lost: 'danger',
+// ─── Temperature Badge ────────────────────────────────────────────────────────
+
+function TempBadge({ temp }: { temp: 'hot' | 'warm' | 'cold' }) {
+  if (temp === 'hot') return (
+    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[var(--color-amber-soft)] text-[var(--color-amber)] flex-shrink-0">
+      <Flame size={8} /> HOT
+    </span>
+  )
+  if (temp === 'warm') return (
+    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[var(--color-amber-soft)] text-[var(--color-amber)] flex-shrink-0">
+      <Zap size={8} /> WARM
+    </span>
+  )
+  return (
+    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-[var(--color-blue-soft)] text-[var(--color-blue)] flex-shrink-0">
+      <Wind size={8} /> COLD
+    </span>
+  )
 }
 
-const columnBg: Record<string, string> = {
-  new:       'bg-[rgba(20,16,31,0.03)]',
-  contacted: 'bg-[var(--color-blue-soft)]',
-  qualified: 'bg-[var(--color-amber-soft)]',
-  proposal:  'bg-[var(--color-purple-soft)]',
-  won:       'bg-[var(--color-success-soft)]',
-}
-
-function TempDot({ temp }: { temp: 'hot' | 'warm' | 'cold' }) {
-  const color = temp === 'hot'
-    ? 'bg-[var(--color-danger)]'
-    : temp === 'warm'
-    ? 'bg-[var(--color-amber)]'
-    : 'bg-[var(--color-blue)]'
-  return <span className={`w-2 h-2 rounded-full ${color} flex-shrink-0`} title={temp} />
-}
-
-function SourceIcon({ source }: { source: LeadSource }) {
-  const cls = 'w-3.5 h-3.5 text-[var(--color-faint)]'
-  switch (source) {
-    case 'instagram':  return <AtSign className={cls} />
-    case 'google':     return <Globe className={cls} />
-    case 'cold-email': return <Mail className={cls} />
-    case 'website':    return <Globe className={cls} />
-    case 'sms':        return <MessageSquare className={cls} />
-    case 'referral':   return <Users className={cls} />
-    default:           return <FileText className={cls} />
-  }
-}
+// ─── Activity Icon ────────────────────────────────────────────────────────────
 
 function ActivityIcon({ type }: { type: Activity['type'] }) {
   const cls = 'w-3.5 h-3.5'
@@ -81,29 +78,29 @@ function LeadCard({ lead, onClick }: { lead: Lead; onClick: () => void }) {
   return (
     <div
       onClick={onClick}
-      className="bg-[var(--color-surface)] rounded-[var(--radius-base)] border border-[var(--color-hairline)] shadow-[var(--shadow-sm)] p-3 cursor-pointer hover:shadow-[var(--shadow-md)] hover:border-[var(--color-purple)] transition-all duration-150 group"
+      className="bg-[var(--color-surface)] rounded-[var(--radius-base)] border border-[var(--color-hairline)] p-4 cursor-pointer hover:shadow-[var(--shadow-md)] hover:border-[var(--color-purple)] transition-all duration-150"
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <p className="text-[13px] font-semibold text-[var(--color-ink)] leading-tight group-hover:text-[var(--color-purple)] transition-colors">
-          {lead.business}
-        </p>
-        <TempDot temp={lead.temperature} />
+      {/* Top row: business name + temp badge */}
+      <div className="flex items-start justify-between gap-2 mb-1.5">
+        <p className="text-[13px] font-semibold text-[var(--color-ink)] leading-tight">{lead.business}</p>
+        <TempBadge temp={lead.temperature} />
       </div>
-      <p className="text-[11px] text-[var(--color-muted)] mb-2">{lead.contact}</p>
+      {/* Contact · industry */}
+      <p className="text-[12px] text-[var(--color-muted)] mb-2.5">{lead.contact} · {lead.industry}</p>
+      {/* Value + icons + source */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <SourceIcon source={lead.source} />
-          <span className="text-[11px] font-semibold font-[var(--font-mono)] text-[var(--color-ink)]">
-            {fmtMoney(lead.value)}
-          </span>
+        <div className="flex items-center gap-2">
+          <span className="text-[13px] font-bold text-[var(--color-ink)] font-[var(--font-mono)]">{fmtMoney(lead.value)}</span>
+          <Mail size={12} className="text-[var(--color-faint)]" />
+          <MessageCircle size={12} className="text-[var(--color-faint)]" />
         </div>
-        <Badge variant={stageBadgeVariant[lead.stage]}>{STAGES.find(s => s.key === lead.stage)?.label}</Badge>
+        <span className="text-[11px] text-[var(--color-faint)]">{sourceLabel(lead.source)}</span>
       </div>
     </div>
   )
 }
 
-// ─── Lead Drawer ─────────────────────────────────────────────────────────────
+// ─── Lead Detail Drawer ───────────────────────────────────────────────────────
 
 function LeadDrawer({ lead, onClose }: { lead: Lead | null; onClose: () => void }) {
   const moveLead = useConsoleStore(s => s.moveLead)
@@ -117,47 +114,38 @@ function LeadDrawer({ lead, onClose }: { lead: Lead | null; onClose: () => void 
   }
 
   return (
-    <Drawer open title={lead.business} onClose={onClose} width="w-[520px]">
+    <Drawer open title={lead.business} onClose={onClose} width="w-[480px]">
       <div className="flex flex-col gap-6 p-6">
 
-        {/* Header info */}
+        {/* Header */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-[18px] font-semibold text-[var(--color-ink)]">{lead.business}</h3>
+            <h2 className="text-[20px] font-semibold text-[var(--color-ink)]">{lead.business}</h2>
             <p className="text-[13px] text-[var(--color-muted)] mt-0.5">{lead.industry}</p>
           </div>
-          <div className="flex flex-col items-end gap-2">
-            <Badge variant={stageBadgeVariant[lead.stage]}>
-              {STAGES.find(s => s.key === lead.stage)?.label}
-            </Badge>
-            <TempDot temp={lead.temperature} />
-          </div>
+          <TempBadge temp={lead.temperature} />
         </div>
 
-        {/* Details Grid */}
+        {/* Details grid */}
         <div className="grid grid-cols-2 gap-3">
           {[
-            { label: 'Contact',  value: lead.contact },
-            { label: 'Email',    value: lead.email },
-            { label: 'Phone',    value: lead.phone ?? '—' },
-            { label: 'Value',    value: fmtMoney(lead.value) },
-            { label: 'Source',   value: lead.source },
-            { label: 'Created',  value: fmtDate(lead.createdAt) },
+            { label: 'Contact', value: lead.contact },
+            { label: 'Email',   value: lead.email   },
+            { label: 'Value',   value: fmtMoney(lead.value) },
+            { label: 'Source',  value: sourceLabel(lead.source) },
+            { label: 'Created', value: fmtDate(lead.createdAt) },
+            { label: 'Stage',   value: STAGES.find(s => s.key === lead.stage)?.label ?? lead.stage },
           ].map(item => (
             <div key={item.label} className="bg-[var(--color-bg)] rounded-[var(--radius-base)] p-3">
-              <p className="text-[11px] font-medium text-[var(--color-muted)] uppercase tracking-wide mb-0.5">
-                {item.label}
-              </p>
+              <p className="text-[11px] font-medium text-[var(--color-muted)] uppercase tracking-wide mb-0.5">{item.label}</p>
               <p className="text-[13px] font-medium text-[var(--color-ink)] truncate">{item.value}</p>
             </div>
           ))}
         </div>
 
-        {/* Stage Selector */}
+        {/* Stage selector */}
         <div>
-          <p className="text-[12px] font-semibold text-[var(--color-muted)] uppercase tracking-wide mb-2">
-            Move Stage
-          </p>
+          <p className="text-[12px] font-semibold text-[var(--color-muted)] uppercase tracking-wide mb-2">Move stage</p>
           <div className="grid grid-cols-5 gap-1.5">
             {STAGES.map(s => (
               <button
@@ -185,7 +173,7 @@ function LeadDrawer({ lead, onClose }: { lead: Lead | null; onClose: () => void 
           </div>
         )}
 
-        {/* Activity Timeline */}
+        {/* Activity timeline */}
         <div>
           <p className="text-[12px] font-semibold text-[var(--color-muted)] uppercase tracking-wide mb-3">
             Activity ({lead.activities.length})
@@ -245,73 +233,40 @@ function AddLeadModal({ open, onClose }: { open: boolean; onClose: () => void })
     const now = new Date().toISOString().split('T')[0]
     addLead({
       id: 'l' + Date.now(),
-      business: form.business,
-      contact: form.contact,
-      email: form.email,
+      business: form.business, contact: form.contact, email: form.email,
       phone: form.phone || undefined,
       value: parseFloat(form.value) || 0,
-      stage: form.stage,
-      temperature: form.temperature,
-      source: form.source,
-      industry: form.industry,
+      stage: form.stage, temperature: form.temperature,
+      source: form.source, industry: form.industry,
       notes: form.notes || undefined,
-      createdAt: now,
-      updatedAt: now,
-      activities: [],
+      createdAt: now, updatedAt: now, activities: [],
     })
-    toast('Lead added successfully')
+    toast('Lead added')
     setForm(EMPTY_FORM)
     onClose()
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="Add New Lead" width="max-w-xl">
+    <Modal open={open} onClose={onClose} title="Add lead" width="max-w-xl">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-3">
           <Field label="Business Name *">
-            <Input
-              placeholder="Glow Beauty Bar"
-              value={form.business}
-              onChange={e => set('business', e.target.value)}
-            />
+            <Input placeholder="TitanFit Studio" value={form.business} onChange={e => set('business', e.target.value)} />
           </Field>
           <Field label="Contact Name *">
-            <Input
-              placeholder="Maya Johnson"
-              value={form.contact}
-              onChange={e => set('contact', e.target.value)}
-            />
+            <Input placeholder="Rico Alvarez" value={form.contact} onChange={e => set('contact', e.target.value)} />
           </Field>
           <Field label="Email *">
-            <Input
-              type="email"
-              placeholder="maya@example.com"
-              value={form.email}
-              onChange={e => set('email', e.target.value)}
-            />
+            <Input type="email" placeholder="rico@example.com" value={form.email} onChange={e => set('email', e.target.value)} />
           </Field>
           <Field label="Phone">
-            <Input
-              type="tel"
-              placeholder="(214) 555-0192"
-              value={form.phone}
-              onChange={e => set('phone', e.target.value)}
-            />
+            <Input type="tel" placeholder="(214) 555-0192" value={form.phone} onChange={e => set('phone', e.target.value)} />
           </Field>
           <Field label="Est. Value ($)">
-            <Input
-              type="number"
-              placeholder="3500"
-              value={form.value}
-              onChange={e => set('value', e.target.value)}
-            />
+            <Input type="number" placeholder="5000" value={form.value} onChange={e => set('value', e.target.value)} />
           </Field>
           <Field label="Industry">
-            <Input
-              placeholder="Beauty"
-              value={form.industry}
-              onChange={e => set('industry', e.target.value)}
-            />
+            <Input placeholder="Fitness" value={form.industry} onChange={e => set('industry', e.target.value)} />
           </Field>
           <Field label="Stage">
             <Select value={form.stage} onChange={e => set('stage', e.target.value as LeadStage)}>
@@ -320,33 +275,30 @@ function AddLeadModal({ open, onClose }: { open: boolean; onClose: () => void })
           </Field>
           <Field label="Temperature">
             <Select value={form.temperature} onChange={e => set('temperature', e.target.value as 'hot' | 'warm' | 'cold')}>
-              <option value="hot">🔥 Hot</option>
-              <option value="warm">🟡 Warm</option>
-              <option value="cold">🔵 Cold</option>
+              <option value="hot">Hot</option>
+              <option value="warm">Warm</option>
+              <option value="cold">Cold</option>
             </Select>
           </Field>
-          <Field label="Source">
-            <Select value={form.source} onChange={e => set('source', e.target.value as LeadSource)}>
-              <option value="referral">Referral</option>
-              <option value="instagram">Instagram</option>
-              <option value="google">Google</option>
-              <option value="cold-email">Cold Email</option>
-              <option value="website">Website</option>
-              <option value="sms">SMS</option>
-            </Select>
-          </Field>
+          <div className="col-span-2">
+            <Field label="Source">
+              <Select value={form.source} onChange={e => set('source', e.target.value as LeadSource)}>
+                <option value="website">Website form</option>
+                <option value="referral">Referral</option>
+                <option value="cold-email">Imported list</option>
+                <option value="instagram">Instagram</option>
+                <option value="google">Google</option>
+                <option value="sms">SMS</option>
+              </Select>
+            </Field>
+          </div>
         </div>
         <Field label="Notes">
-          <Textarea
-            placeholder="Any context about this lead..."
-            value={form.notes}
-            onChange={e => set('notes', e.target.value)}
-            rows={3}
-          />
+          <Textarea placeholder="Any context about this lead..." value={form.notes} onChange={e => set('notes', e.target.value)} rows={3} />
         </Field>
         <div className="flex items-center justify-end gap-2 pt-2 border-t border-[var(--color-hairline)]">
           <Button type="button" variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="primary"><Plus size={14} /> Add Lead</Button>
+          <Button type="submit" variant="primary"><UserPlus size={14} /> Add Lead</Button>
         </div>
       </form>
     </Modal>
@@ -359,50 +311,93 @@ export function Leads() {
   const leads = useConsoleStore(s => s.leads)
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
   const [addOpen, setAddOpen] = useState(false)
+  const toast = useToast()
+
+  const openLeads    = leads.filter(l => l.stage !== 'won' && l.stage !== 'lost')
+  const pipelineVal  = openLeads.reduce((s, l) => s + l.value, 0)
+  const hotCount     = leads.filter(l => l.temperature === 'hot').length
+  const wonThisMonth = leads.filter(l => l.stage === 'won' && l.updatedAt >= '2026-06-01').reduce((s, l) => s + l.value, 0)
 
   return (
     <div className="flex flex-col gap-5 min-h-0">
 
-      {/* Header */}
+      {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold font-[var(--font-display)] text-[var(--color-ink)]">
-            Lead Pipeline
-          </h1>
+          <h2 className="text-[22px] font-semibold font-[var(--font-display)] text-[var(--color-ink)]">Sales pipeline</h2>
           <p className="text-[13px] text-[var(--color-muted)] mt-0.5">
-            {leads.length} leads · ${leads.reduce((s, l) => s + l.value, 0).toLocaleString()} total pipeline
+            Drag leads between stages · {leads.length} total
           </p>
         </div>
-        <Button variant="primary" onClick={() => setAddOpen(true)}>
-          <Plus size={14} /> Add Lead
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" onClick={() => toast('Nurture flow coming soon', 'info')}>
+            <Heart size={14} /> Nurture selected
+          </Button>
+          <Button variant="primary" onClick={() => setAddOpen(true)}>
+            <UserPlus size={14} /> Add lead
+          </Button>
+        </div>
       </div>
 
-      {/* Kanban Board */}
-      <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
-        {STAGES.map(({ key, label }) => {
+      {/* KPI cards */}
+      <div className="grid grid-cols-4 gap-4">
+        <StatCard
+          label="Open leads"
+          value={openLeads.length}
+          icon={<Filter size={16} />}
+          accent="blue"
+          deltaLabel="Active in pipeline"
+        />
+        <StatCard
+          label="Pipeline value"
+          value={'$' + (pipelineVal / 1000).toFixed(0) + 'k'}
+          icon={<DollarSign size={16} />}
+          accent="blue"
+          deltaLabel="Excl. won & lost"
+        />
+        <StatCard
+          label="Hot leads"
+          value={hotCount}
+          icon={<Flame size={16} />}
+          accent="amber"
+          deltaLabel="Ready to close"
+        />
+        <StatCard
+          label="Won this month"
+          value={'$' + (wonThisMonth / 1000).toFixed(1) + 'k'}
+          icon={<CheckCircle size={16} />}
+          accent="success"
+          deltaLabel="Closed revenue"
+        />
+      </div>
+
+      {/* Kanban */}
+      <div className="flex gap-3 overflow-x-auto pb-3 -mx-1 px-1">
+        {STAGES.map(({ key, label, dotColor }) => {
           const colLeads = leads.filter(l => l.stage === key)
           const colTotal = colLeads.reduce((s, l) => s + l.value, 0)
 
           return (
             <div
               key={key}
-              className={`flex-shrink-0 w-[260px] rounded-[var(--radius-lg)] p-3 ${columnBg[key]} border border-[var(--color-hairline)]`}
+              className="flex-shrink-0 min-w-[280px] w-[280px] bg-[var(--color-surface)] rounded-[var(--radius-lg)] border border-[var(--color-hairline)] shadow-[var(--shadow-sm)] p-3"
             >
-              {/* Column Header */}
-              <div className="flex items-center justify-between mb-3">
+              {/* Column header */}
+              <div className="flex items-center justify-between mb-1.5">
                 <div className="flex items-center gap-2">
-                  <Badge variant={stageBadgeVariant[key]}>{label}</Badge>
-                  <span className="text-[12px] font-semibold font-[var(--font-mono)] text-[var(--color-muted)]">
-                    {colLeads.length}
-                  </span>
+                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: dotColor }} />
+                  <span className="text-[13px] font-semibold text-[var(--color-ink)]">{label}</span>
                 </div>
-                <span className="text-[11px] font-medium text-[var(--color-faint)] font-[var(--font-mono)]">
-                  {fmtMoney(colTotal)}
+                <span className="text-[11px] font-semibold bg-[rgba(20,16,31,0.06)] text-[var(--color-muted)] px-2 py-0.5 rounded-full">
+                  {colLeads.length}
                 </span>
               </div>
+              {/* Column total */}
+              <p className="text-[11px] text-[var(--color-muted)] mb-3 font-[var(--font-mono)]">
+                {fmtMoney(colTotal)}
+              </p>
 
-              {/* Lead Cards */}
+              {/* Lead cards */}
               <div className="flex flex-col gap-2">
                 {colLeads.length === 0 ? (
                   <div className="py-8 text-center">
@@ -410,11 +405,7 @@ export function Leads() {
                   </div>
                 ) : (
                   colLeads.map(lead => (
-                    <LeadCard
-                      key={lead.id}
-                      lead={lead}
-                      onClick={() => setSelectedLead(lead)}
-                    />
+                    <LeadCard key={lead.id} lead={lead} onClick={() => setSelectedLead(lead)} />
                   ))
                 )}
               </div>
@@ -423,11 +414,19 @@ export function Leads() {
         })}
       </div>
 
-      {/* Lead Detail Drawer */}
+      {/* Lead detail drawer */}
       <LeadDrawer lead={selectedLead} onClose={() => setSelectedLead(null)} />
 
-      {/* Add Lead Modal */}
+      {/* Add lead modal */}
       <AddLeadModal open={addOpen} onClose={() => setAddOpen(false)} />
+
+      {/* Sparkles FAB */}
+      <button
+        className="fixed bottom-6 right-6 z-30 flex items-center gap-2 px-4 py-2.5 bg-[var(--color-purple)] text-white rounded-full shadow-[var(--shadow-lg)] hover:bg-[var(--color-purple-deep)] transition-all text-[13px] font-semibold"
+        onClick={() => toast('Ask Bix coming soon', 'info')}
+      >
+        <Sparkles size={14} /> Ask Bix
+      </button>
 
     </div>
   )
