@@ -145,7 +145,7 @@ export function Sidebar() {
 
         {/* User footer — bx-side__foot */}
         {sidebarOpen && (
-          <div style={{ padding: 12, borderTop: '1px solid var(--bx-line-2)', shrink: 0 }}>
+          <div style={{ padding: 12, borderTop: '1px solid var(--bx-line-2)', flexShrink: 0 }}>
             <button
               className="bx-side__user w-full text-left"
               style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 8, borderRadius: 8, cursor: 'pointer', background: 'transparent', border: 0, width: '100%', transition: 'background 160ms' }}
