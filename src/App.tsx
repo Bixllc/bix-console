@@ -18,8 +18,10 @@ function Layout({ children }: { children: React.ReactNode }) {
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
         <main className="flex-1 overflow-y-auto">
-          <div className="max-w-[1320px] mx-auto px-5 py-6">
-            {children}
+          <div className="bx-view">
+            <div className="bx-view__inner">
+              {children}
+            </div>
           </div>
         </main>
       </div>

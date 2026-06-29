@@ -327,7 +327,7 @@ export function Dashboard() {
       </div>
 
       {/* Ask Bix FAB */}
-      <button className="fixed bottom-6 right-6 z-30 flex items-center gap-2 px-4 py-2.5 bg-[var(--color-purple)] text-white rounded-full shadow-[var(--shadow-lg)] hover:bg-[var(--color-purple-deep)] transition-all text-[13px] font-semibold">
+      <button className="bx-fab fixed bottom-6 right-6 flex items-center gap-2 px-4 py-2.5 bg-[var(--bx-purple)] text-white rounded-full shadow-[var(--bx-shadow-lg)] hover:bg-[var(--bx-purple-2)] transition-all text-[13px] font-semibold">
         <Sparkles size={14} />
         Ask Bix
       </button>
