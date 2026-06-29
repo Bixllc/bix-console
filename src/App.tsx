@@ -13,10 +13,9 @@ import { SettingsPage } from '@/pages/Settings'
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    /* portal.css: .bx-app.is-on = grid sidebar|1fr, height 100vh */
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'var(--bx-sidebar) 1fr',
+    /* portal.css: .bx-app.is-on = grid sidebar|1fr, height 100vh
+       On mobile the sidebar is position:fixed (out of flow), so collapse to 1 col */
+    <div className="grid grid-cols-1 lg:grid-cols-[var(--bx-sidebar)_1fr]" style={{
       height: '100vh',
       overflow: 'hidden',
       background: 'var(--bx-bg)',
