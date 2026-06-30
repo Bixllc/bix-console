@@ -113,7 +113,7 @@
   button { font-family: inherit; cursor: pointer; }
 }
 
-#root { display: flex; height: 100vh; overflow: hidden; }
+#root { height: 100vh; overflow: hidden; }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
