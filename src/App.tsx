@@ -13,16 +13,16 @@ import { SettingsPage } from '@/pages/Settings'
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
-    /* portal.css: .bx-app.is-on = grid sidebar|1fr, height 100vh
-       On mobile the sidebar is position:fixed (out of flow), so collapse to 1 col */
-    <div className="grid grid-cols-1 lg:grid-cols-[var(--bx-sidebar)_1fr]" style={{
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'var(--bx-sidebar) 1fr',
       height: '100vh',
       overflow: 'hidden',
       background: 'var(--bx-bg)',
     }}>
       <Sidebar />
-      {/* portal.css: .bx-main = flex-col, height 100vh, min-width 0 */}
-      <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, height: '100vh', overflow: 'hidden' }}>
+      {/* col-span-full on mobile: sidebar is fixed (out of flow) so content must span both cols */}
+      <div className="col-span-full lg:col-auto" style={{ display: 'flex', flexDirection: 'column', minWidth: 0, height: '100vh', overflow: 'hidden' }}>
         <Topbar />
         {/* portal.css: .bx-view = flex:1, overflow-y:auto, padding 28 30 60 */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '28px 30px 60px' }}>
